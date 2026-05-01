@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Pierce Middle School</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+
+    #error {
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+
+  <script>
+    function loadFromHash() {
+      const hash = window.location.hash;
+
+      if (!hash || hash.length <= 1) {
+        showError("No URL provided after # in the address bar.");
+        return;
+      }
+
+      const targetUrl = decodeURIComponent(hash.slice(1).trim());
+
+      if (!targetUrl.startsWith("http://") && !targetUrl.startsWith("https://")) {
+        showError("Invalid URL. Must start with http:// or https://");
+        return;
+      }
+
+      const iframe = document.createElement("iframe");
+      iframe.src = targetUrl;
+      iframe.allow = "fullscreen";
+      iframe.allowFullscreen = true;
+
+      document.body.innerHTML = "";
+      document.body.appendChild(iframe);
+    }
+
+    function showError(msg) {
+      document.body.innerHTML = "";
+      const div = document.createElement("div");
+      div.id = "error";
+      div.textContent = msg;
+      document.body.appendChild(div);
+    }
+
+    window.addEventListener("DOMContentLoaded", loadFromHash);
+    window.addEventListener("hashchange", loadFromHash);
+  </script>
+</head>
+<body></body>
+</html>
